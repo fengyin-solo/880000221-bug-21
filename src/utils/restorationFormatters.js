@@ -1,3 +1,8 @@
+// 读数格式保持 “N 批”：数字与单位之间空一格，全站统一口径。
+export function formatPulpReading(amount, unit = '批') {
+  return `${amount} ${unit}`
+}
+
 export function riskMeta(risk) {
   const map = {
     high: {

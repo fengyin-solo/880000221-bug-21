@@ -1,5 +1,6 @@
 <script setup>
-import { riskMeta } from '../../utils/restorationFormatters'
+import { usePulpReplenishment } from '../../composables/usePulpReplenishment'
+import { formatPulpReading, riskMeta } from '../../utils/restorationFormatters'
 
 defineProps({
   items: {
@@ -7,6 +8,8 @@ defineProps({
     required: true,
   },
 })
+
+const { summaryMap } = usePulpReplenishment()
 </script>
 
 <template>
@@ -25,6 +28,9 @@ defineProps({
       <h4>{{ item.title }}</h4>
       <p>页码：{{ item.pages }}</p>
       <p>阶段：{{ item.status }}</p>
+      <p v-if="summaryMap[item.code]" class="batch-pulp">
+        纸浆补配余量：{{ formatPulpReading(summaryMap[item.code].remaining, summaryMap[item.code].unit) }}（{{ summaryMap[item.code].fiber }}）
+      </p>
       <small>{{ item.note }}</small>
     </article>
   </div>

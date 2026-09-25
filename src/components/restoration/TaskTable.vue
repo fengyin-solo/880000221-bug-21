@@ -1,5 +1,6 @@
 <script setup>
-import { riskMeta } from '../../utils/restorationFormatters'
+import { usePulpReplenishment } from '../../composables/usePulpReplenishment'
+import { formatPulpReading, riskMeta } from '../../utils/restorationFormatters'
 
 defineProps({
   rows: {
@@ -7,6 +8,13 @@ defineProps({
     required: true,
   },
 })
+
+const { summaryMap } = usePulpReplenishment()
+
+function pulpReading(batchCode) {
+  const summary = summaryMap.value[batchCode]
+  return summary ? formatPulpReading(summary.remaining, summary.unit) : '—'
+}
 </script>
 
 <template>
@@ -16,6 +24,7 @@ defineProps({
       <span>阶段</span>
       <span>风险</span>
       <span>负责人</span>
+      <span>纸浆余量</span>
       <span>说明</span>
     </div>
     <div
@@ -29,6 +38,7 @@ defineProps({
         {{ riskMeta(row.risk).label }}
       </span>
       <span>{{ row.owner }}</span>
+      <span class="task-pulp">{{ pulpReading(row.batchCode) }}</span>
       <span>{{ row.note }}</span>
     </div>
   </div>
@@ -43,7 +53,7 @@ defineProps({
 
 .task-row {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr 0.6fr 0.7fr 1.3fr;
+  grid-template-columns: 1.2fr 0.8fr 0.6fr 0.7fr 0.8fr 1.3fr;
   gap: 12px;
   align-items: center;
   padding: 14px 16px;
@@ -68,6 +78,10 @@ defineProps({
   width: fit-content;
   padding: 6px 10px;
   border-radius: 999px;
+}
+
+.task-pulp {
+  font-weight: 700;
 }
 
 .risk-tag--high {

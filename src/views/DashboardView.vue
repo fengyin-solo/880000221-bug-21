@@ -6,14 +6,16 @@ import EnvironmentCards from '../components/restoration/EnvironmentCards.vue'
 import HeroBanner from '../components/restoration/HeroBanner.vue'
 import {
   restorationBatches,
-  restorationEnvironment,
   restorationHero,
   restorationSteps,
 } from '../data/restorationData'
 import { useRestorationOverview } from '../composables/useRestorationOverview'
+import { usePulpReplenishment } from '../composables/usePulpReplenishment'
 
 const { batchCount, environmentCount, highRiskCount, ownerCount } =
   useRestorationOverview()
+
+const { environmentItems } = usePulpReplenishment()
 
 const statCards = [
   { label: '在册批次', value: batchCount.value },
@@ -49,7 +51,7 @@ const statCards = [
     </section>
 
     <PanelSection title="环境参数" badge="修复室 2">
-      <EnvironmentCards :items="restorationEnvironment" />
+      <EnvironmentCards :items="environmentItems" />
     </PanelSection>
   </div>
 </template>
