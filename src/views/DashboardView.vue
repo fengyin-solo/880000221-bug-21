@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import PanelSection from '../components/common/PanelSection.vue'
 import StatCard from '../components/common/StatCard.vue'
 import BatchGrid from '../components/restoration/BatchGrid.vue'
@@ -11,9 +12,12 @@ import {
   restorationSteps,
 } from '../data/restorationData'
 import { useRestorationOverview } from '../composables/useRestorationOverview'
+import { usePulpLedger } from '../composables/usePulpLedger'
 
 const { batchCount, environmentCount, highRiskCount, ownerCount } =
   useRestorationOverview()
+
+const { remainingBatchCount, remainderLabel } = usePulpLedger()
 
 const statCards = [
   { label: '在册批次', value: batchCount.value },
@@ -21,6 +25,20 @@ const statCards = [
   { label: '环境指标', value: environmentCount.value },
   { label: '参与修复师', value: ownerCount.value },
 ]
+
+// 环境参数面板的纸浆补配读数随台账实时派生，
+// 不再显示旧批次的固定“2 批”；数值格式与纤维类型文案保持原样
+const environmentItems = computed(() =>
+  restorationEnvironment.map((item) =>
+    item.label === '纸浆补配'
+      ? {
+          ...item,
+          value: `${remainingBatchCount.value} 批`,
+          note: `${item.note} · ${remainderLabel.value}`,
+        }
+      : item,
+  ),
+)
 </script>
 
 <template>
@@ -49,7 +67,7 @@ const statCards = [
     </section>
 
     <PanelSection title="环境参数" badge="修复室 2">
-      <EnvironmentCards :items="restorationEnvironment" />
+      <EnvironmentCards :items="environmentItems" />
     </PanelSection>
   </div>
 </template>

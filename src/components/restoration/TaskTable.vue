@@ -1,5 +1,6 @@
 <script setup>
 import { riskMeta } from '../../utils/restorationFormatters'
+import { usePulpLedger } from '../../composables/usePulpLedger'
 
 defineProps({
   rows: {
@@ -7,6 +8,8 @@ defineProps({
     required: true,
   },
 })
+
+const { remainderLabel } = usePulpLedger()
 </script>
 
 <template>
@@ -29,7 +32,10 @@ defineProps({
         {{ riskMeta(row.risk).label }}
       </span>
       <span>{{ row.owner }}</span>
-      <span>{{ row.note }}</span>
+      <span class="task-note">
+        {{ row.note }}
+        <em :key="`${row.code}-pulp`" class="task-note__pulp">{{ remainderLabel }}</em>
+      </span>
     </div>
   </div>
 </template>
@@ -83,6 +89,17 @@ defineProps({
 .risk-tag--low {
   background: #d9ead9;
   color: #366338;
+}
+
+.task-note {
+  display: grid;
+  gap: 4px;
+}
+
+.task-note__pulp {
+  font-style: normal;
+  color: #7a4a25;
+  font-weight: 600;
 }
 
 @media (max-width: 900px) {

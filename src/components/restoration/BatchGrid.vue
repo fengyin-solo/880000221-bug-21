@@ -1,5 +1,6 @@
 <script setup>
 import { riskMeta } from '../../utils/restorationFormatters'
+import { usePulpLedger } from '../../composables/usePulpLedger'
 
 defineProps({
   items: {
@@ -7,6 +8,8 @@ defineProps({
     required: true,
   },
 })
+
+const { remainderLabel } = usePulpLedger()
 </script>
 
 <template>
@@ -25,6 +28,7 @@ defineProps({
       <h4>{{ item.title }}</h4>
       <p>页码：{{ item.pages }}</p>
       <p>阶段：{{ item.status }}</p>
+      <p class="pulp-remainder">{{ remainderLabel }}</p>
       <small>{{ item.note }}</small>
     </article>
   </div>
@@ -91,6 +95,11 @@ p + small {
 .risk-pill--low {
   background: #d9ead9;
   color: #366338;
+}
+
+.pulp-remainder {
+  color: #7a4a25;
+  font-weight: 600;
 }
 
 @media (max-width: 960px) {

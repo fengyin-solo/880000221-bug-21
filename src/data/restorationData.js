@@ -67,6 +67,7 @@ export const restorationSteps = [
 
 export const restorationTasks = [
   {
+    code: 'A-03',
     title: '明抄本县志残卷',
     stage: '补纸前',
     risk: 'high',
@@ -74,6 +75,7 @@ export const restorationTasks = [
     note: '虫道贯穿标题栏，需先固色。',
   },
   {
+    code: 'B-11',
     title: '碑帖拓片册页',
     stage: '控湿中',
     risk: 'medium',
@@ -81,6 +83,7 @@ export const restorationTasks = [
     note: '边缘卷曲，可延后压平。',
   },
   {
+    code: 'C-02',
     title: '戏曲抄本散页',
     stage: '归档前',
     risk: 'low',
